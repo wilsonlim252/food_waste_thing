@@ -2,6 +2,14 @@
 
 void nullall(void);
 
+//led function prototype
+void greenpart(void);
+void yellowpart(void);
+void redpart(void);
+
+//buzzer function
+void buzzerpart(int,int);
+
 const int CLK = 10;
 const int DIO = 11;
 
@@ -78,7 +86,7 @@ void loop() {
     nullall();
     digitalWrite(redled, HIGH);
   }
-  else if (potv > thresholdv[4] && potv < thresholdv[5]) {
+  else if (potv > thresholdv[4] && potv <= thresholdv[5]) {
     nullall();
     digitalWrite(redled, HIGH);
     delay(wait);
