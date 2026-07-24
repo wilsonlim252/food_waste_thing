@@ -16,6 +16,7 @@ const int DIO = 11;
 TM1637Display display(CLK, DIO);
 
 const int potpin = 0;
+int potv;
 
 const int buzzer = 3;
 const int redled = 4;
@@ -35,6 +36,19 @@ red > 1200 */
 //set blinking interval)
 const int wait = 100;
 
+void buzzerpart(int tone1,int tone2) {
+  if (potv > thresholdv[5]) {
+    nullall();
+    tone(buzzer, tone1);
+    delay(wait);
+    tone(buzzer, tone2);
+    delay(wait);
+  }
+  else {
+    nullall();
+  }
+}
+
 void setup() {
   Serial.begin(9600);
 
@@ -49,8 +63,7 @@ void setup() {
 }
 
 void loop() {
-  int potv = analogRead(potpin)*2;
-
+  potv = analogRead(potpin)*2;
   //print my values dawgg
   Serial.println(potv);
   display.showNumberDec(potv);
@@ -94,17 +107,8 @@ void loop() {
     delay(wait);
   }
 
-  //Buzzer
-  else if (potv > thresholdv[5]) {
-    nullall();
-    tone(buzzer, 1000);
-    delay(wait);
-    tone(buzzer, 500);
-    delay(wait);
-  }
-  else {
-    nullall();
-  }
+  buzzerpart(1000, 250);
+  
 }
 
 void nullall() {
