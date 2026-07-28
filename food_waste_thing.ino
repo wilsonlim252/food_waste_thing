@@ -9,13 +9,12 @@ TM1637 disp(CLK, DIO);
 #define potpin A0
 
 #define buzzer 3
-#define redled 4
-#define yellowled 7
-#define greenled 5
+
+const int ledpin[] = {5, 7, 4}; //green, yellow, red
 
 PassiveBuzzer buz(buzzer);
 
-int thresholdv[] = {600, 800, 900, 1000, 1100, 1200};
+const int thresholdv[] = {600, 800, 900, 1000, 1100, 1200};
 /*
 green < 600
 blink > 600 <= 800
@@ -36,9 +35,9 @@ void setup() {
   pinMode(potpin, INPUT);
 
   pinMode(buzzer, OUTPUT);
-  pinMode(redled, OUTPUT);
-  pinMode(yellowled, OUTPUT);
-  pinMode(greenled, OUTPUT);
+  pinMode(ledpin[2], OUTPUT);
+  pinMode(ledpin[1], OUTPUT);
+  pinMode(ledpin[0], OUTPUT);
 
   disp.init();
 }
@@ -53,39 +52,39 @@ void loop() {
   //Green
   if (potv <= thresholdv[0]) {
     nullall();
-    digitalWrite(greenled, HIGH);
+    digitalWrite(ledpin[0], HIGH);
   }
   else if (potv > thresholdv[0] && potv <= thresholdv[1]) {
     nullall();
-    digitalWrite(greenled, HIGH);
+    digitalWrite(ledpin[0], HIGH);
     delay(wait);
-    digitalWrite(greenled, LOW);
+    digitalWrite(ledpin[0], LOW);
     delay(wait);
   }
 
   //Yellow
   else if (potv > thresholdv[1] && potv <= thresholdv[2]) {
     nullall();
-    digitalWrite(yellowled, HIGH);
+    digitalWrite(ledpin[1], HIGH);
   }
   else if (potv > thresholdv[2] && potv <= thresholdv[3]) {
     nullall();
-    digitalWrite(yellowled, HIGH);
+    digitalWrite(ledpin[1], HIGH);
     delay(wait);
-    digitalWrite(yellowled, LOW);
+    digitalWrite(ledpin[1], LOW);
     delay(wait);
   }
 
   //Red
   else if (potv > thresholdv[3] && potv <= thresholdv[4]) {
     nullall();
-    digitalWrite(redled, HIGH);
+    digitalWrite(ledpin[2], HIGH);
   }
-  else if (potv >= thresholdv[4] && potv < thresholdv[5]) {
+  else if (potv > thresholdv[4] && potv < thresholdv[5]) {
     nullall();
-    digitalWrite(redled, HIGH);
+    digitalWrite(ledpin[2], HIGH);
     delay(wait);
-    digitalWrite(redled, LOW);
+    digitalWrite(ledpin[2], LOW);
     delay(wait);
   }
 
@@ -94,7 +93,7 @@ void loop() {
     nullall();
     buz.playTone(1000, 100);
     digitalWrite(buzzer, LOW);
-    buz.playTone(500, 100);
+    buz.playTone(1500, 100);
     digitalWrite(buzzer, LOW);
   }
   else {
@@ -103,8 +102,8 @@ void loop() {
 }
 
 void nullall() {
-  digitalWrite(redled, LOW);
-  digitalWrite(yellowled, LOW);
-  digitalWrite(greenled, LOW);
+  digitalWrite(ledpin[0], LOW);
+  digitalWrite(ledpin[1], LOW);
+  digitalWrite(ledpin[2], LOW);
   digitalWrite(buzzer, LOW);
 }
