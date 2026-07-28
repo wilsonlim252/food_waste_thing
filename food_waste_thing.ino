@@ -9,9 +9,10 @@ TM1637 disp(CLK, DIO);
 #define potpin A0
 
 #define buzzer 3
-PassiveBuzzer buz(buzzer);3
+PassiveBuzzer buz(buzzer);
 
 const int ledpin[] = {5, 7, 4}; //green, yellow, red
+const int buzzerv[] = {1000, 1200, 1500};
 const int thresholdv[] = {600, 800, 900, 1000, 1100, 1200};
 /*
 green < 600
@@ -23,7 +24,7 @@ blink > 1100 <= 1200
 red > 1200 */
 
 //set blinking interval)
-const int wait = 100;
+const int wait = 75;
 
 void nullall(void);
 
@@ -89,9 +90,11 @@ void loop() {
   //Buzzer
   else if (potv > thresholdv[5]) {
     nullall();
-    buz.playTone(1000, 100);
+    buz.playTone(buzzerv[0], wait);
     digitalWrite(buzzer, LOW);
-    buz.playTone(1500, 100);
+    buz.playTone(buzzerv[1], wait);
+    digitalWrite(buzzer, LOW);
+    buz.playTone(buzzerv[2], wait);
     digitalWrite(buzzer, LOW);
   }
   else {
