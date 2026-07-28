@@ -1,22 +1,11 @@
-#include <TM1637Display.h>
-
-void nullall(void);
-
-//led function prototype
-void greenpart(void);
-void yellowpart(void);
-void redpart(void);
-
-//buzzer function
-void buzzerpart(int,int);
+#include "RichShieldTM1637.h"
 
 const int CLK = 10;
 const int DIO = 11;
 
-TM1637Display display(CLK, DIO);
+TM1637 disp(CLK, DIO);
 
-const int potpin = 0;
-int potv;
+const int potpin = A0;
 
 const int buzzer = 3;
 const int redled = 4;
@@ -36,18 +25,7 @@ red > 1200 */
 //set blinking interval)
 const int wait = 100;
 
-void buzzerpart(int tone1,int tone2) {
-  if (potv > thresholdv[5]) {
-    nullall();
-    tone(buzzer, tone1);
-    delay(wait);
-    tone(buzzer, tone2);
-    delay(wait);
-  }
-  else {
-    nullall();
-  }
-}
+void nullall(void);
 
 void setup() {
   Serial.begin(9600);
@@ -59,14 +37,15 @@ void setup() {
   pinMode(yellowled, OUTPUT);
   pinMode(greenled, OUTPUT);
 
-  display.setBrightness(7);
+  disp.init();
 }
 
 void loop() {
-  potv = analogRead(potpin)*2;
+  int potv = analogRead(potpin)*2;
+
   //print my values dawgg
   Serial.println(potv);
-  display.showNumberDec(potv);
+  disp.display((int)potv);
 
   //Green
   if (potv <= thresholdv[0]) {
@@ -99,7 +78,7 @@ void loop() {
     nullall();
     digitalWrite(redled, HIGH);
   }
-  else if (potv > thresholdv[4] && potv <= thresholdv[5]) {
+  else if (potv >= thresholdv[4] && potv < thresholdv[5]) {
     nullall();
     digitalWrite(redled, HIGH);
     delay(wait);
@@ -107,13 +86,22 @@ void loop() {
     delay(wait);
   }
 
-  buzzerpart(1000, 250);
-  
+  //Buzzer
+  else if (potv > thresholdv[5]) {
+    nullall();
+    digitalWrite(buzzer, HIGH);
+    delay(wait);
+    digitalWrite(buzzer, LOW);
+    delay(wait);
+  }
+  else {
+    nullall();
+  }
 }
 
 void nullall() {
   digitalWrite(redled, LOW);
   digitalWrite(yellowled, LOW);
   digitalWrite(greenled, LOW);
-  noTone(buzzer);
+  digitalWrite(buzzer, LOW);
 }
