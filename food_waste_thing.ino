@@ -9,11 +9,9 @@ TM1637 disp(CLK, DIO);
 #define potpin A0
 
 #define buzzer 3
+PassiveBuzzer buz(buzzer);3
 
 const int ledpin[] = {5, 7, 4}; //green, yellow, red
-
-PassiveBuzzer buz(buzzer);
-
 const int thresholdv[] = {600, 800, 900, 1000, 1100, 1200};
 /*
 green < 600
