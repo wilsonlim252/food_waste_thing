@@ -1,16 +1,19 @@
 #include "RichShieldTM1637.h"
+#include "RichShieldPassiveBuzzer.h"
 
-const int CLK = 10;
-const int DIO = 11;
+#define CLK 10
+#define DIO 11
 
 TM1637 disp(CLK, DIO);
 
-const int potpin = A0;
+#define potpin A0
 
-const int buzzer = 3;
-const int redled = 4;
-const int yellowled = 7;
-const int greenled = 5;
+#define buzzer 3
+#define redled 4
+#define yellowled 7
+#define greenled 5
+
+PassiveBuzzer buz(buzzer);
 
 int thresholdv[] = {600, 800, 900, 1000, 1100, 1200};
 /*
@@ -45,7 +48,7 @@ void loop() {
 
   //print my values dawgg
   Serial.println(potv);
-  disp.display((int)potv);
+  disp.display(potv);
 
   //Green
   if (potv <= thresholdv[0]) {
@@ -89,10 +92,10 @@ void loop() {
   //Buzzer
   else if (potv > thresholdv[5]) {
     nullall();
-    digitalWrite(buzzer, HIGH);
-    delay(wait);
+    buz.playTone(1000, 100);
     digitalWrite(buzzer, LOW);
-    delay(wait);
+    buz.playTone(500, 100);
+    digitalWrite(buzzer, LOW);
   }
   else {
     nullall();
