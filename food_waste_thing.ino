@@ -28,7 +28,8 @@
   const int wait = 75;
 
   void nullall(void);
-  void warning(int);
+  void warning(void);
+  void alarm(void);
 
   void setup() {
     Serial.begin(9600);
@@ -37,9 +38,10 @@
     pinMode(LDRpin, INPUT);
 
     pinMode(buzzer, OUTPUT);
-    pinMode(ledpin[2], OUTPUT);
-    pinMode(ledpin[1], OUTPUT);
-    pinMode(ledpin[0], OUTPUT);
+    for (int i=0; i<3; i++) {
+      pinMode(ledpin[i], OUTPUT);
+    }
+    
 
     disp.init();
   }
@@ -62,9 +64,9 @@
   }
 
   void nullall() {
-    digitalWrite(ledpin[0], LOW);
-    digitalWrite(ledpin[1], LOW);
-    digitalWrite(ledpin[2], LOW);
+    for (int i = 0; i<3; i++) {
+      digitalWrite(ledpin[i], LOW);
+    }
     digitalWrite(buzzer, LOW);
   }
   void warning(int potv) {
@@ -111,20 +113,17 @@
     //Buzzer
     else if (potv >= thresholdv[5]) {
       nullall();
-      buz.playTone(buzzerv[0], wait);
-      digitalWrite(buzzer, LOW);
-      buz.playTone(buzzerv[1], wait);
-      digitalWrite(buzzer, LOW);
-      buz.playTone(buzzerv[2], wait);
-      digitalWrite(buzzer, LOW);
+      alarm();
     }
     else {
       nullall();
     }
   }
-  void yellowled() {
-
-  }
-  void redled() {
-    
+  void alarm() {
+    buz.playTone(buzzerv[0], wait);
+    digitalWrite(buzzer, LOW);
+    buz.playTone(buzzerv[1], wait);
+    digitalWrite(buzzer, LOW);
+    buz.playTone(buzzerv[2], wait);
+    digitalWrite(buzzer, LOW);
   }
