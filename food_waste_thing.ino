@@ -12,7 +12,7 @@
   PassiveBuzzer buz(buzzer);
 
   const int ledpin[] = {5, 7, 4}; //green, yellow, red
-  const int buzzerv[] = {1000, 1200, 1500};
+  const int buzzerv[] = {1000, 1250, 1500};
   const int thresholdv[] = {600, 800, 900, 1000, 1100, 1200};
 
   /*
@@ -25,7 +25,7 @@
   red > 1200 */
 
   //set blinking interval)
-  const int wait = 75;
+  const int wait = 80;
 
   void nullall(void);
   void warning(void);
@@ -120,10 +120,8 @@
     }
   }
   void alarm() {
-    buz.playTone(buzzerv[0], wait);
-    digitalWrite(buzzer, LOW);
-    buz.playTone(buzzerv[1], wait);
-    digitalWrite(buzzer, LOW);
-    buz.playTone(buzzerv[2], wait);
-    digitalWrite(buzzer, LOW);
+    int buzzarray_size = sizeof(buzzerv) / sizeof(buzzerv[0]);
+    for (int i = 0; i<buzzarray_size; i++) {
+      buz.playTone(buzzerv[i], wait);
+    }
   }
