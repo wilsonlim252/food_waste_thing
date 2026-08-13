@@ -27,8 +27,11 @@
   //set blinking interval)
   const int wait = 80;
 
+  //by dong xuan
   void nullall(void);
+  //by Wilson Lim: P2603278
   void warning(int potv);
+  //by Luke Chua
   void alarm(void);
 
   void setup() {
