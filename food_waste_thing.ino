@@ -28,7 +28,7 @@
   const int wait = 80;
 
   void nullall(void);
-  void warning(void);
+  void warning(int potv);
   void alarm(void);
 
   void setup() {
