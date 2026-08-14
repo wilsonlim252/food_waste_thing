@@ -11,9 +11,9 @@
   #define buzzer 3
   PassiveBuzzer buz(buzzer);
 
-  const int ledpin[] = {5, 7, 4}; //green, yellow, red; dong xuan
-  const int buzzerv[] = {1000, 1250, 1500}; //luke chua
-  const int thresholdv[] = {600, 800, 900, 1000, 1100, 1200}; //values for the pot to determind the level of waste and approprate action
+  const int ledpin[] = {5, 7, 4}; //green, yellow, red
+  const int buzzerv[] = {1000, 1250, 1500};
+  const int thresholdv[] = {600, 800, 900, 1000, 1100, 1200};
 
   /*
   green < 600
@@ -111,28 +111,22 @@
   }
 
 
-  void blink(char colour) { //by dong xuan
+  void blink(char colour) {  //by dong xuan
     nullall();
-    switch (colour) {
-      case 'g':
-        digitalWrite(ledpin[0], HIGH);
-        delay(wait);
-        digitalWrite(ledpin[0], LOW);
-        delay(wait);
-        break;
-      case 'y':
-        digitalWrite(ledpin[1], HIGH);
-        delay(wait);
-        digitalWrite(ledpin[1], LOW);
-        delay(wait);
-        break;
-      case 'r':
-        digitalWrite(ledpin[2], HIGH);
-        delay(wait);
-        digitalWrite(ledpin[2], LOW);
-        delay(wait);
-        break;
+    int idx;
 
+    switch (colour) {
+      case 'g': idx = 0; break;
+      case 'y': idx = 1; break;
+      case 'r': idx = 2; break;
+      default: return; // invalid colour, do nothing
+    }
+
+    for (int i = 0; i < 1; i++) {   // change "1" to blink more times, e.g. 3
+      digitalWrite(ledpin[idx], HIGH);
+      delay(wait);
+      digitalWrite(ledpin[idx], LOW);
+      delay(wait);
     }
   }
 
